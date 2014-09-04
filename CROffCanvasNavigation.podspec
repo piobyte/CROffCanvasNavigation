@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CROffCanvasNavigation"
-  s.version          = "0.0.1"
+  s.version          = "0.0.0"
   s.summary          = "A short description of CROffCanvasNavigation."
   s.description      = <<-DESC
                        An optional longer description of CROffCanvasNavigation
