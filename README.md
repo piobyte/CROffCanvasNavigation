@@ -1,6 +1,6 @@
 # CROffCanvasNavigation
 
-[![CI Status](http://img.shields.io/travis/Steve Maahs/CROffCanvasNavigation.svg?style=flat)](https://travis-ci.org/Steve Maahs/CROffCanvasNavigation)
+[![CI Status](http://img.shields.io/travis/piobyte/CROffCanvasNavigation.svg?style=flat)](https://travis-ci.org/piobyte/CROffCanvasNavigation)
 [![Version](https://img.shields.io/cocoapods/v/CROffCanvasNavigation.svg?style=flat)](http://cocoadocs.org/docsets/CROffCanvasNavigation)
 [![License](https://img.shields.io/cocoapods/l/CROffCanvasNavigation.svg?style=flat)](http://cocoadocs.org/docsets/CROffCanvasNavigation)
 [![Platform](https://img.shields.io/cocoapods/p/CROffCanvasNavigation.svg?style=flat)](http://cocoadocs.org/docsets/CROffCanvasNavigation)
@@ -20,7 +20,7 @@ it, simply add the following line to your Podfile:
 
 ## Author
 
-Steve Maahs, steve.maahs@piobyte.de
+Romair, romair90@gmail.com
 
 ## License
 
