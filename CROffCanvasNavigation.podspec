@@ -9,14 +9,14 @@
 
 Pod::Spec.new do |s|
   s.name             = "CROffCanvasNavigation"
-  s.version          = "0.0.0"
-  s.summary          = "A short description of CROffCanvasNavigation."
-  s.description      = <<-DESC
-                       An optional longer description of CROffCanvasNavigation
-
-                       * Markdown format.
-                       * Don't worry about the indent, we strip it!
-                       DESC
+  s.version          = "0.0.1"
+  s.summary          = "A NavigationController for Off-Canvas Navigation."
+  # s.description      = <<-DESC
+  #                     An optional longer description of CROffCanvasNavigation
+  #
+  #                     * Markdown format.
+  #                     * Don't worry about the indent, we strip it!
+  #                     DESC
   s.homepage         = "https://github.com/piobyte/CROffCanvasNavigation"
   # s.screenshots     = "www.example.com/screenshots_1", "www.example.com/screenshots_2"
   s.license          = 'MIT'
