@@ -1,0 +1,9 @@
+target 'CROffCanvasNavigation', :exclusive => true do
+  pod "CROffCanvasNavigation", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "CROffCanvasNavigation", :path => "../"
+
+  pod 'Kiwi'
+end
