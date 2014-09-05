@@ -9,8 +9,8 @@
 // CROffCanvasNavigation
 #define COCOAPODS_POD_AVAILABLE_CROffCanvasNavigation
 #define COCOAPODS_VERSION_MAJOR_CROffCanvasNavigation 0
-#define COCOAPODS_VERSION_MINOR_CROffCanvasNavigation 1
-#define COCOAPODS_VERSION_PATCH_CROffCanvasNavigation 0
+#define COCOAPODS_VERSION_MINOR_CROffCanvasNavigation 0
+#define COCOAPODS_VERSION_PATCH_CROffCanvasNavigation 1
 
 // Kiwi
 #define COCOAPODS_POD_AVAILABLE_Kiwi

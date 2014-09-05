@@ -1,5 +1,5 @@
 PODS:
-  - CROffCanvasNavigation (0.1.0)
+  - CROffCanvasNavigation (0.0.1)
   - Kiwi (2.3.0)
 
 DEPENDENCIES:
@@ -11,7 +11,7 @@ EXTERNAL SOURCES:
     :path: ../
 
 SPEC CHECKSUMS:
-  CROffCanvasNavigation: d988d228e130a3c88641764c321387af74a519b6
+  CROffCanvasNavigation: f2280cb58777db10f186e39fac0450a41d908986
   Kiwi: 54bece5b35564d9b8e03c608d926f1a22fcfc589
 
 COCOAPODS: 0.33.1

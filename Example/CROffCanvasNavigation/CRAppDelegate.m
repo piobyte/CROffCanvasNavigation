@@ -8,11 +8,22 @@
 
 #import "CRAppDelegate.h"
 
+#import <CROffCanvasNavigationController.h>
+
+#import "ViewControllerOne.h"
+#import "ViewControllerTwo.h"
+#import "ViewControllerThree.h"
+
 @implementation CRAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
+    
+    //[_window setRootViewController:[story instantiateViewControllerWithIdentifier:@"OCNC"]];
+    [(CROffCanvasNavigationController *)_window.rootViewController setOffCanvasDelegate:self];
+    
     return YES;
 }
 							
@@ -41,6 +52,25 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (NSArray *)arrayOfViewControllerForOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController
+{
+    ViewControllerOne *vc1 = [[ViewControllerOne alloc] init];
+    ViewControllerTwo *vc2 = [[ViewControllerTwo alloc] init];
+    ViewControllerThree *vc3 = [[ViewControllerThree alloc] init];
+    
+    return @[vc1,vc2,vc3];
+}
+
+- (id<UITableViewDataSource>)tableViewDataSourceForOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController
+{
+    return self;
+}
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 0;
 }
 
 @end

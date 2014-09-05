@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <CROffCanvasNavigationController.h>
 
-@interface CRAppDelegate : UIResponder <UIApplicationDelegate>
+@interface CRAppDelegate : UIResponder <UIApplicationDelegate, CROffCanvasNavigationDelegate, UITableViewDataSource>
 
 @property (strong, nonatomic) UIWindow *window;
 

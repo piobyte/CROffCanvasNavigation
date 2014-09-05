@@ -7,7 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F187F4719B886BF0070CE1E /* CROffCanvasNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F187F4619B886BF0070CE1E /* CROffCanvasNavigationController.m */; };
+		3F9EB18219B90D4600203D8B /* ViewControllerOne.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9EB18119B90D4600203D8B /* ViewControllerOne.m */; };
+		3F9EB18519B90D5500203D8B /* ViewControllerTwo.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9EB18419B90D5500203D8B /* ViewControllerTwo.m */; };
+		3F9EB18819B90D6300203D8B /* ViewControllerThree.m in Sources */ = {isa = PBXBuildFile; fileRef = 3F9EB18719B90D6200203D8B /* ViewControllerThree.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -39,8 +41,12 @@
 
 /* Begin PBXFileReference section */
 		20830BBE4B1B44A49F4AA0A7 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = README.md; path = ../README.md; sourceTree = "<group>"; };
-		3F187F4519B886BF0070CE1E /* CROffCanvasNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CROffCanvasNavigationController.h; path = ../../Pod/Classes/CROffCanvasNavigationController.h; sourceTree = "<group>"; };
-		3F187F4619B886BF0070CE1E /* CROffCanvasNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CROffCanvasNavigationController.m; path = ../../Pod/Classes/CROffCanvasNavigationController.m; sourceTree = "<group>"; };
+		3F9EB18019B90D4600203D8B /* ViewControllerOne.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerOne.h; sourceTree = "<group>"; };
+		3F9EB18119B90D4600203D8B /* ViewControllerOne.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerOne.m; sourceTree = "<group>"; };
+		3F9EB18319B90D5500203D8B /* ViewControllerTwo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerTwo.h; sourceTree = "<group>"; };
+		3F9EB18419B90D5500203D8B /* ViewControllerTwo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerTwo.m; sourceTree = "<group>"; };
+		3F9EB18619B90D6200203D8B /* ViewControllerThree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewControllerThree.h; sourceTree = "<group>"; };
+		3F9EB18719B90D6200203D8B /* ViewControllerThree.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewControllerThree.m; sourceTree = "<group>"; };
 		44EC4E61535B48099FB37E9E /* Pods-Tests.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.xcconfig"; path = "Pods/Pods-Tests.xcconfig"; sourceTree = "<group>"; };
 		5EC3746F42F3423288915AC4 /* libPods-Tests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Tests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58A195388D20070C39A /* CROffCanvasNavigation.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CROffCanvasNavigation.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -96,15 +102,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		3F187F4419B8864B0070CE1E /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				3F187F4519B886BF0070CE1E /* CROffCanvasNavigationController.h */,
-				3F187F4619B886BF0070CE1E /* CROffCanvasNavigationController.m */,
-			);
-			name = Source;
-			sourceTree = "<group>";
-		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
@@ -149,8 +146,13 @@
 				6003F5A2195388D20070C39A /* Main_iPad.storyboard */,
 				6003F5A5195388D20070C39A /* CRViewController.h */,
 				6003F5A6195388D20070C39A /* CRViewController.m */,
+				3F9EB18019B90D4600203D8B /* ViewControllerOne.h */,
+				3F9EB18119B90D4600203D8B /* ViewControllerOne.m */,
+				3F9EB18319B90D5500203D8B /* ViewControllerTwo.h */,
+				3F9EB18419B90D5500203D8B /* ViewControllerTwo.m */,
+				3F9EB18619B90D6200203D8B /* ViewControllerThree.h */,
+				3F9EB18719B90D6200203D8B /* ViewControllerThree.m */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
-				3F187F4419B8864B0070CE1E /* Source */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			path = CROffCanvasNavigation;
@@ -362,10 +364,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F187F4719B886BF0070CE1E /* CROffCanvasNavigationController.m in Sources */,
+				3F9EB18519B90D5500203D8B /* ViewControllerTwo.m in Sources */,
 				6003F59E195388D20070C39A /* CRAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* CRViewController.m in Sources */,
+				3F9EB18819B90D6300203D8B /* ViewControllerThree.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				3F9EB18219B90D4600203D8B /* ViewControllerOne.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -505,6 +509,7 @@
 				GCC_PREFIX_HEADER = "CROffCanvasNavigation/CROffCanvasNavigation-Prefix.pch";
 				INFOPLIST_FILE = "CROffCanvasNavigation/CROffCanvasNavigation-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -519,6 +524,7 @@
 				GCC_PREFIX_HEADER = "CROffCanvasNavigation/CROffCanvasNavigation-Prefix.pch";
 				INFOPLIST_FILE = "CROffCanvasNavigation/CROffCanvasNavigation-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
