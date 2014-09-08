@@ -38,6 +38,8 @@
 @property (nonatomic, readonly) NSArray *offCanvasViewControllers;
 @property IBOutlet id <CROffCanvasNavigationDelegate> offCanvasDelegate;
 
+- (void)toggleOffCanvasView;
+
 /**
  
  @param offCanvasNavigationController
@@ -58,7 +60,6 @@
 
 //- (CGFloat)
 
-- (id <UITableViewDataSource>)tableViewDataSourceForOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
-- (id <UITableViewDelegate>)tableViewDelegateForOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
+- (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasViewController didInitTableView:(UITableView *)tableView;
 
 @end

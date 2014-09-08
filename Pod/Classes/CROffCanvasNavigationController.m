@@ -75,6 +75,7 @@
         UITableView *tableView = [[UITableView alloc] initWithFrame:frameRect style:UITableViewStylePlain];
         tableView.contentInset = UIEdgeInsetsMake(20, 0, 0, 0);
         tableView.delegate = self;
+        tableView.dataSource = self;
         
         _offCanvasView = tableView;
     } else {
@@ -88,11 +89,8 @@
         _offCanvasViewControllers = @[];
     }
     
-    if([_offCanvasDelegate respondsToSelector:@selector(tableViewDataSourceForOffCanvasNavigationController:)]) {
-        [(UITableView*)_offCanvasView setDataSource:[_offCanvasDelegate tableViewDataSourceForOffCanvasNavigationController:self]];
-    }
-    if([_offCanvasDelegate respondsToSelector:@selector(tableViewDelegateForOffCanvasNavigationController:)]) {
-        [(UITableView*)_offCanvasView setDelegate:[_offCanvasDelegate tableViewDelegateForOffCanvasNavigationController:self]];
+    if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:didInitTableView:)]) {
+        [_offCanvasDelegate offCanvasNavigationController:self didInitTableView:(UITableView *)_offCanvasView];
     }
 }
 
@@ -153,7 +151,15 @@
         if ([viewController isEqual:self.topViewController] ) {
             //[[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(toggleOffCanvasView)]];
             
-            [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"CROffCanvasNavigation.bundle/MenuIcon.png"] style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
+            UIImage *image = nil;
+            
+            if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:menuButtonImageForNextViewController:)]) {
+                image = [_offCanvasDelegate offCanvasNavigationController:self menuButtonImageForNextViewController:viewController];
+            } else {
+                image = [UIImage imageNamed:@"CROffCanvasNavigation.bundle/MenuIcon.png"];
+            }
+            
+            [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
         }
 //    }
 }
