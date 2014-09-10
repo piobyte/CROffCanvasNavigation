@@ -28,6 +28,9 @@
 @interface CROffCanvasNavigationController () <UINavigationControllerDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @property BOOL sideViewOpen;
+@property UIView *fadeoutView;
+
+- (void)setContra;
 
 @end
 
@@ -108,40 +111,67 @@
 #pragma mark - Methods
 - (void)toggleOffCanvasView
 {
-    
     if (_sideViewOpen) {
         [UIView animateWithDuration:0.25 animations:^{
             for (UIView *view in self.view.subviews) {
-                [view setTransform:CGAffineTransformIdentity];
+                if (![view isEqual:_fadeoutView]) {
+                    [view setTransform:CGAffineTransformIdentity];
+                }
+                _fadeoutView.backgroundColor = [UIColor clearColor];
             }
-//            [[self navigationBar] setTransform:CGAffineTransformIdentity];
-//            [[self toolbar] setTransform:CGAffineTransformIdentity];
-//            [_offCanvasView setTransform:CGAffineTransformIdentity];
         } completion:^(BOOL finished) {
-            [[self.view.subviews lastObject] removeFromSuperview];
+            [_offCanvasView removeFromSuperview];
+            [_fadeoutView removeFromSuperview];
         }];
-        
+        UIImage *icon = self.topViewController.navigationItem.leftBarButtonItem.image;
+        [self.topViewController.navigationItem.leftBarButtonItem setImage:[icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _sideViewOpen = NO;
     } else {
         CGAffineTransform righttransform = CGAffineTransformMakeTranslation(270, 0);
-        NSLog(@"helpme %@",[self viewControllers]);
+        
         [self.view addSubview:_offCanvasView];
+        
+        if (_shouldFadeOut) {
+            [self setContra];
+        }
+        
         [UIView animateWithDuration:0.25 animations:^{
-//            [[self navigationBar] setTransform:righttransform];
-//            [[self toolbar] setTransform:righttransform];
-//            [_offCanvasView setTransform:righttransform];
+            [_fadeoutView setBackgroundColor:_fadeoutColor];
             for (UIView *view in self.view.subviews) {
-                [view setTransform:righttransform];;
+                if (![view isEqual:_fadeoutView]) {
+                    [view setTransform:righttransform];
+                }
             }
         }];
+        UIImage *icon = self.topViewController.navigationItem.leftBarButtonItem.image;
+        [self.topViewController.navigationItem.leftBarButtonItem setImage:[icon imageWithRenderingMode:UIImageRenderingModeAutomatic]];
         [self viewControllers];
-        //        [self navigation]
-        
-        //[[self view] setTransform:righttransform];
-        NSLog(@"Subviews: %@",self.view.subviews);
-        
         _sideViewOpen = YES;
     }
+}
+
+- (void)setContra
+{
+    if (_fadeoutView == nil) {
+        _fadeoutView = [[UIView alloc] init];
+        _fadeoutView.translatesAutoresizingMaskIntoConstraints = NO;
+        _fadeoutView.userInteractionEnabled = NO;
+    }
+    if (_fadeoutColor == nil) {
+        _fadeoutColor = [[UIColor blackColor] colorWithAlphaComponent:.33];
+    }
+
+    _fadeoutView.backgroundColor = [UIColor clearColor];
+    
+    [self.view insertSubview:_fadeoutView atIndex:1];
+    
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"H:|-0-[_fadeoutView]-0-|" options:0 metrics:nil views:@{@"_fadeoutView":_fadeoutView}]];
+    [self.view addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-0-[_fadeoutView]-0-|" options:0 metrics:nil views:@{@"_fadeoutView":_fadeoutView}]];
+}
+
+-(void)removeContra
+{
+    
 }
 
 #pragma mark - Delegate NavigationViewController
@@ -159,7 +189,7 @@
                 image = [UIImage imageNamed:@"CROffCanvasNavigation.bundle/MenuIcon.png"];
             }
             
-            [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
+            [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
         }
 //    }
 }
@@ -169,20 +199,15 @@
 #pragma mark - DataSource TableView
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 2;
+    return 1;
 }
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *string = nil;
     switch (section) {
         case 0:
-            string = @"blabla";
+            string = @"ViewController"; //text abfragen
             break;
-            
-        case 1:
-            string = @" ";
-            break;
-            
         default:
             break;
     }
@@ -197,11 +222,6 @@
         case 0:
             numberOfRows = [_offCanvasViewControllers count];
             break;
-        
-        case 1:
-            numberOfRows = 0;
-            break;
-            
         default:
             break;
     }
