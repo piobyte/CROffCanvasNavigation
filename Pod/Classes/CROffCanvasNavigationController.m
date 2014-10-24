@@ -198,7 +198,9 @@
                 image = [UIImage imageNamed:@"CROffCanvasNavigation.bundle/MenuIcon.png"];
             }
             
-            [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
+            if (image != nil) {
+                [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
+            }
         }
 //    }
 }
