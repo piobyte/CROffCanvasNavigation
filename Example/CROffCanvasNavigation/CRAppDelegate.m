@@ -63,6 +63,11 @@
     return @[vc1,vc2,vc3];
 }
 
+- (void)willSlideMenuInOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController
+{
+
+}
+
 - (id<UITableViewDataSource>)tableViewDataSourceForOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController
 {
     return self;

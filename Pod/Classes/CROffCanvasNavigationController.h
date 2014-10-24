@@ -61,7 +61,8 @@
 
 - (UIImage *)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController menuButtonImageForNextViewController:(UIViewController *)viewController;
 
-//- (CGFloat)
+- (void)willSlideMenuInOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
+- (void)willSlideMenuOutOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
 
 - (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasViewController didInitTableView:(UITableView *)tableView;
 

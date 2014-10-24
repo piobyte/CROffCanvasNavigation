@@ -112,6 +112,11 @@
 - (void)toggleOffCanvasView
 {
     if (_sideViewOpen) {
+        
+        if ([_offCanvasDelegate respondsToSelector:@selector(willSlideMenuOutOffCanvasNavigationController:)]) {
+            [_offCanvasDelegate willSlideMenuOutOffCanvasNavigationController:self];
+        }
+        
         [UIView animateWithDuration:0.25 animations:^{
             for (UIView *view in self.view.subviews) {
                 if (![view isEqual:_fadeoutView]) {
@@ -133,6 +138,10 @@
         
         if (_shouldFadeOut) {
             [self setContra];
+        }
+        
+        if ([_offCanvasDelegate respondsToSelector:@selector(willSlideMenuInOffCanvasNavigationController:)]) {
+            [_offCanvasDelegate willSlideMenuInOffCanvasNavigationController:self];
         }
         
         [UIView animateWithDuration:0.25 animations:^{
