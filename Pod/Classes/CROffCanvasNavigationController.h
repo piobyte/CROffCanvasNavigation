@@ -61,6 +61,9 @@
 
 - (UIImage *)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController menuButtonImageForNextViewController:(UIViewController *)viewController;
 
+- (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController  didLoadViewController:(UIViewController *)viewController;
+
+
 - (void)willSlideMenuInOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
 - (void)willSlideMenuOutOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
 

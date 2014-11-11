@@ -31,6 +31,7 @@
 @property UIView *fadeoutView;
 
 - (void)setContra;
+- (void)removeContra;
 
 @end
 
@@ -164,7 +165,7 @@
     if (_fadeoutView == nil) {
         _fadeoutView = [[UIView alloc] init];
         _fadeoutView.translatesAutoresizingMaskIntoConstraints = NO;
-        _fadeoutView.userInteractionEnabled = NO;
+        _fadeoutView.userInteractionEnabled = YES;
     }
     if (_fadeoutColor == nil) {
         _fadeoutColor = [[UIColor blackColor] colorWithAlphaComponent:.33];
@@ -180,38 +181,45 @@
 
 -(void)removeContra
 {
-    
+    [_fadeoutView removeFromSuperview];
+    _fadeoutView = nil;
 }
 
 #pragma mark - Delegate NavigationViewController
 -(void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-//    for (UIViewController *controller in _viewControllers) {
-        if ([viewController isEqual:self.topViewController] ) {
-            //[[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(toggleOffCanvasView)]];
-            
-            UIImage *image = nil;
-            
-            if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:menuButtonImageForNextViewController:)]) {
-                image = [_offCanvasDelegate offCanvasNavigationController:self menuButtonImageForNextViewController:viewController];
-            } else {
-                image = [UIImage imageNamed:@"CROffCanvasNavigation.bundle/MenuIcon.png"];
-            }
-            
-            if (image != nil) {
-                [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
-            }
+    if ([viewController isEqual:self.topViewController] ) {
+        
+        UIImage *image = nil;
+        
+        if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:menuButtonImageForNextViewController:)]) {
+            image = [_offCanvasDelegate offCanvasNavigationController:self menuButtonImageForNextViewController:viewController];
+        } else {
+            image = [UIImage imageNamed:@"CROffCanvasNavigation.bundle/MenuIcon.png"];
         }
-//    }
+        
+        if (image != nil) {
+            [[viewController navigationItem] setLeftBarButtonItem:[[UIBarButtonItem alloc] initWithImage:[image imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal] style:UIBarButtonItemStylePlain target:self action:@selector(toggleOffCanvasView)]];
+        }
+    }
+    
+}
+
+- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
+{
+    if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:didLoadViewController:)]) {
+        [_offCanvasDelegate offCanvasNavigationController:self didLoadViewController:viewController];
+    }
 }
 
 #pragma mark - Delegate TableView
 
 #pragma mark - DataSource TableView
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
+
 -(NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section
 {
     NSString *string = nil;
