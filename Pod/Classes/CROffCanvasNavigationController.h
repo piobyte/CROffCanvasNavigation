@@ -43,6 +43,9 @@
 
 - (void)toggleOffCanvasView;
 
+- (void)addPanGestureRecognizer;
+- (void)removePanGestureRecognizer;
+
 /**
  
  @param offCanvasNavigationController

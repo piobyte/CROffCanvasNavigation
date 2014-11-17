@@ -30,6 +30,8 @@
 @property BOOL sideViewOpen;
 @property UIView *fadeoutView;
 
+@property UIPanGestureRecognizer *swipeMenuGestureRecognizer;
+
 - (void)setContra;
 - (void)removeContra;
 
@@ -95,6 +97,70 @@
     
     if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:didInitTableView:)]) {
         [_offCanvasDelegate offCanvasNavigationController:self didInitTableView:(UITableView *)_offCanvasView];
+    }
+    
+    [self addPanGestureRecognizer];
+}
+
+- (void)addPanGestureRecognizer
+{
+    if (_swipeMenuGestureRecognizer == nil) {
+        _swipeMenuGestureRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(doPanGestureWithRecognizer:)];
+    }
+    [self.view addGestureRecognizer:_swipeMenuGestureRecognizer];
+}
+
+- (void)removePanGestureRecognizer
+{
+    [self.view removeGestureRecognizer:_swipeMenuGestureRecognizer];
+}
+
+- (void)doPanGestureWithRecognizer:(UIPanGestureRecognizer *)recognizer
+{
+    CGPoint tranlation = [recognizer translationInView:self.view];
+    
+    if (_sideViewOpen) {
+        if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x < -50) {
+            [self toggleOffCanvasView];
+        } else if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x > -50) {
+            [UIView animateWithDuration:0.125 animations:^{
+                for (UIView *view in self.view.subviews) {
+                    if (![view isEqual:_fadeoutView]) {
+                        [view setTransform:CGAffineTransformMakeTranslation(270, 0)];
+                    }
+                }
+            }];
+        } else if (tranlation.x < 0){
+            if (270 + tranlation.x > 0) {
+                for (UIView *view in self.view.subviews) {
+                    if (![view isEqual:_fadeoutView]) {
+                        [view setTransform:CGAffineTransformMakeTranslation(270 + tranlation.x, 0)];
+                    }
+                }
+            }
+        }
+    } else {
+        if (recognizer.state == UIGestureRecognizerStateBegan) {
+            [self.view addSubview:_offCanvasView];
+        } else if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x > 75) {
+            [self toggleOffCanvasView];
+        } else if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x < 75) {
+            [UIView animateWithDuration:0.125 animations:^{
+                for (UIView *view in self.view.subviews) {
+                    if (![view isEqual:_fadeoutView]) {
+                        [view setTransform:CGAffineTransformIdentity];
+                    }
+                }
+            }];
+        } else if (tranlation.x > 0){
+            if (tranlation.x < 270) {
+                for (UIView *view in self.view.subviews) {
+                    if (![view isEqual:_fadeoutView]) {
+                        [view setTransform:CGAffineTransformMakeTranslation(tranlation.x, 0)];
+                    }
+                }
+            }
+        }
     }
 }
 
