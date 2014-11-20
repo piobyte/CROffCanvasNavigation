@@ -130,9 +130,6 @@
 {
     CGPoint tranlation = [recognizer translationInView:self.view];
     CGPoint velocity = [recognizer velocityInView:self.view];
-    NSLog(@"%@ - %@",[NSValue valueWithCGPoint:tranlation],[NSValue valueWithCGPoint:velocity]);
-    
-//    NSLog(@"%@",recognizer);
     
     if (recognizer.state == UIGestureRecognizerStateBegan) {
         [self beganPanRecognitionWithTranslation:tranlation Velocity:velocity];
