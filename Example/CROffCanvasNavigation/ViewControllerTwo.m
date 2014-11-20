@@ -8,6 +8,8 @@
 
 #import "ViewControllerTwo.h"
 
+#import "ViewControllerOne.h"
+
 @interface ViewControllerTwo ()
 
 @end
@@ -28,12 +30,25 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"VC Two"];
+    self.view.backgroundColor = [UIColor cyanColor];
+    
+    UIButton * buton = [[UIButton alloc] initWithFrame:(CGRect){{40,40},{45,45}}];
+    buton.backgroundColor = [UIColor greenColor];
+    [buton addTarget:self action:@selector(buttonAction:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:buton];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+-(void)buttonAction:(id)sender
+{
+    ViewControllerOne  *vc = [[ViewControllerOne alloc] init];
+    
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 /*

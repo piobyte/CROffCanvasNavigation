@@ -28,12 +28,18 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"VC One"];
+    self.view.backgroundColor = [UIColor magentaColor];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 /*

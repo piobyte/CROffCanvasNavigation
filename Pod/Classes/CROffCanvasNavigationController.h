@@ -37,7 +37,7 @@
 @property (nonatomic, readonly) UIView *offCanvasView;
 @property (nonatomic, readonly) NSArray *offCanvasViewControllers;
 @property IBOutlet id <CROffCanvasNavigationDelegate> offCanvasDelegate;
-@property BOOL highlightWithTintColor;
+//@property BOOL highlightWithTintColor;
 @property BOOL shouldFadeOut;
 @property (nonatomic) UIColor *fadeoutColor;
 
@@ -64,12 +64,20 @@
 
 - (UIImage *)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController menuButtonImageForNextViewController:(UIViewController *)viewController;
 
-- (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController  didLoadViewController:(UIViewController *)viewController;
+- (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController didLoadViewController:(UIViewController *)viewController;
 
 
 - (void)willSlideMenuInOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
 - (void)willSlideMenuOutOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
 
 - (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasViewController didInitTableView:(UITableView *)tableView;
+#pragma mark GestureRecognition
+- (void)beganGestureRecognitionOnOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
+- (void)endedGestureRecognitionOnOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
+- (void)canceledGestureRecognitionOnOffCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController;
+
+#pragma mark NavitgationController Delegates
+- (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController willShowController:(UIViewController *)viewController animated:(BOOL)animated;
+- (void)offCanvasNavigationController:(CROffCanvasNavigationController *)offCanvasNavigationController didShowController:(UIViewController *)viewController animated:(BOOL)animated;
 
 @end

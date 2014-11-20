@@ -29,6 +29,7 @@
 
 @property BOOL sideViewOpen;
 @property UIView *fadeoutView;
+@property CGFloat offCanvasWidth;
 
 @property UIPanGestureRecognizer *swipeMenuGestureRecognizer;
 
@@ -39,7 +40,7 @@
 
 @implementation CROffCanvasNavigationController
 
-@synthesize viewControllers = _viewControllers;
+//@synthesize viewControllers = _viewControllers;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -63,7 +64,7 @@
 {
     self = [super initWithRootViewController:rootViewController];
     if (self){
-    
+    // Custom initialization
     }
     return self;
 }
@@ -74,7 +75,9 @@
     // Do any additional setup after loading the view.
     self.delegate = self;
     
-    CGRect frameRect = (CGRect){{-270,0},{270,self.view.frame.size.height}};
+    _offCanvasWidth = 270;
+    
+    CGRect frameRect = (CGRect){{-_offCanvasWidth,0},{_offCanvasWidth,self.view.frame.size.height}};
     
     int style = 0;
     if (style == 0) {
@@ -102,6 +105,14 @@
     [self addPanGestureRecognizer];
 }
 
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - GestureRecognizer
+#pragma mark
 - (void)addPanGestureRecognizer
 {
     if (_swipeMenuGestureRecognizer == nil) {
@@ -118,73 +129,189 @@
 - (void)doPanGestureWithRecognizer:(UIPanGestureRecognizer *)recognizer
 {
     CGPoint tranlation = [recognizer translationInView:self.view];
+    CGPoint velocity = [recognizer velocityInView:self.view];
+    NSLog(@"%@ - %@",[NSValue valueWithCGPoint:tranlation],[NSValue valueWithCGPoint:velocity]);
     
-    if (_sideViewOpen) {
-        if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x < -50) {
-            [self toggleOffCanvasView];
-        } else if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x > -50) {
-            [UIView animateWithDuration:0.125 animations:^{
-                for (UIView *view in self.view.subviews) {
-                    if (![view isEqual:_fadeoutView]) {
-                        [view setTransform:CGAffineTransformMakeTranslation(270, 0)];
-                    }
-                }
-            }];
-        } else if (tranlation.x < 0){
-            if (270 + tranlation.x > 0) {
-                for (UIView *view in self.view.subviews) {
-                    if (![view isEqual:_fadeoutView]) {
-                        [view setTransform:CGAffineTransformMakeTranslation(270 + tranlation.x, 0)];
-                    }
-                }
-            }
+//    NSLog(@"%@",recognizer);
+    
+    if (recognizer.state == UIGestureRecognizerStateBegan) {
+        [self beganPanRecognitionWithTranslation:tranlation Velocity:velocity];
+    } else if (recognizer.state == UIGestureRecognizerStateChanged) {
+        [self changedPanRecognitionWithTranslation:tranlation Velocity:velocity];
+    } else if (recognizer.state == UIGestureRecognizerStateEnded) {
+        [self endedPanRecognitionWithTranslation:tranlation Velocity:velocity];
+    } else if (recognizer.state == UIGestureRecognizerStateCancelled) {
+        [self canceledPanRecognitionWithTranslation:tranlation Velocity:velocity];
+    }
+}
+
+- (void)beganPanRecognitionWithTranslation:(CGPoint)translation Velocity:(CGPoint)velocity
+{
+    if (!_sideViewOpen) {
+        [self.view addSubview:_offCanvasView];
+        if (_shouldFadeOut) {
+            [self setContra];
         }
-    } else {
-        if (recognizer.state == UIGestureRecognizerStateBegan) {
-            [self.view addSubview:_offCanvasView];
-        } else if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x > 75) {
-            [self toggleOffCanvasView];
-        } else if (recognizer.state == UIGestureRecognizerStateEnded && tranlation.x < 75) {
-            [UIView animateWithDuration:0.125 animations:^{
+    }
+    if ([_offCanvasDelegate respondsToSelector:@selector(beganGestureRecognitionOnOffCanvasNavigationController:)]) {
+        [_offCanvasDelegate beganGestureRecognitionOnOffCanvasNavigationController:self];
+    }
+}
+
+- (void)endedPanRecognitionWithTranslation:(CGPoint)translation Velocity:(CGPoint)velocity
+{
+    if (!_sideViewOpen) {
+        if (translation.x > 50) {
+            double duration = ABS((_offCanvasWidth - translation.x) / velocity.x);
+            duration = duration < .5 ? duration : .5;
+            
+            UIViewAnimationCurve animationCurve = UIViewAnimationCurveEaseOut;
+            
+            [self toggleOffCanvasViewWithDuration:duration animationCurve:animationCurve];
+        } else {
+            double duration = (ABS(translation.x) / _offCanvasWidth) * sqrt(M_E);
+            
+            [UIView animateWithDuration:duration animations:^{
                 for (UIView *view in self.view.subviews) {
                     if (![view isEqual:_fadeoutView]) {
                         [view setTransform:CGAffineTransformIdentity];
                     }
                 }
+                
+                if (_shouldFadeOut) {
+                    _fadeoutView.backgroundColor = [UIColor clearColor];
+                }
+            } completion:^(BOOL finished) {
+                [_offCanvasView removeFromSuperview];
+                [_fadeoutView removeFromSuperview];
             }];
-        } else if (tranlation.x > 0){
-            if (tranlation.x < 270) {
+        }
+    } else {
+        if (translation.x < -50) {
+            double duration = ABS((_offCanvasWidth + translation.x) / velocity.x);
+            duration = duration < .5 ? duration : .5;
+            
+            UIViewAnimationCurve animationCurve = UIViewAnimationCurveEaseOut;
+            
+            [self toggleOffCanvasViewWithDuration:duration animationCurve:animationCurve];
+        } else {
+            double duration = (ABS(translation.x) / _offCanvasWidth) * sqrt(M_E);
+            
+            [UIView animateWithDuration:duration animations:^{
+                [UIView setAnimationCurve:UIViewAnimationCurveEaseInOut];
+                
                 for (UIView *view in self.view.subviews) {
                     if (![view isEqual:_fadeoutView]) {
-                        [view setTransform:CGAffineTransformMakeTranslation(tranlation.x, 0)];
+                        [view setTransform:CGAffineTransformMakeTranslation(_offCanvasWidth, 0)];
                     }
+                }
+                if (_shouldFadeOut) {
+                    _fadeoutView.backgroundColor = _fadeoutColor;
+                }
+            }];
+        }
+    }
+    
+    if ([_offCanvasDelegate respondsToSelector:@selector(endedGestureRecognitionOnOffCanvasNavigationController:)]) {
+        [_offCanvasDelegate endedGestureRecognitionOnOffCanvasNavigationController:self];
+    }
+}
+
+- (void)canceledPanRecognitionWithTranslation:(CGPoint)translation Velocity:(CGPoint)velocity
+{
+    if (!_sideViewOpen) {
+        [UIView animateWithDuration:0.125 animations:^{
+            for (UIView *view in self.view.subviews) {
+                if (![view isEqual:_fadeoutView]) {
+                    [view setTransform:CGAffineTransformIdentity];
+                }
+            }
+        }];
+    } else {
+        [UIView animateWithDuration:0.125 animations:^{
+            for (UIView *view in self.view.subviews) {
+                if (![view isEqual:_fadeoutView]) {
+                    [view setTransform:CGAffineTransformMakeTranslation(_offCanvasWidth, 0)];
+                }
+            }
+        }];
+    }
+    if ([_offCanvasDelegate respondsToSelector:@selector(canceledGestureRecognitionOnOffCanvasNavigationController:)]) {
+        [_offCanvasDelegate canceledGestureRecognitionOnOffCanvasNavigationController:self];
+    }
+}
+
+- (void)changedPanRecognitionWithTranslation:(CGPoint)translation Velocity:(CGPoint)velocity
+{
+    if (!_sideViewOpen) {
+        if (translation.x > 0){
+            if (translation.x < _offCanvasWidth) {
+                for (UIView *view in self.view.subviews) {
+                    if (![view isEqual:_fadeoutView]) {
+                        [view setTransform:CGAffineTransformMakeTranslation(translation.x, 0)];
+                    }
+                }
+                if (_shouldFadeOut) {
+                    _fadeoutView.backgroundColor = [_fadeoutColor colorWithAlphaComponent:(ABS(translation.x)/_offCanvasWidth)*CGColorGetAlpha(_fadeoutColor.CGColor)];
+                }
+            }
+        }
+    } else {
+        if(translation.x < 0){
+            if (_offCanvasWidth + translation.x > 0) {
+                for (UIView *view in self.view.subviews) {
+                    if (![view isEqual:_fadeoutView]) {
+                        [view setTransform:CGAffineTransformMakeTranslation(_offCanvasWidth + translation.x, 0)];
+                    }
+                }
+                if (_shouldFadeOut) {
+                    _fadeoutView.backgroundColor = [_fadeoutColor colorWithAlphaComponent:(ABS(_offCanvasWidth + translation.x)/_offCanvasWidth)*CGColorGetAlpha(_fadeoutColor.CGColor)];
                 }
             }
         }
     }
 }
 
+#pragma mark - Observer
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     NSLog(@"%@ %@ %@",keyPath,object,change);
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
-
 #pragma mark - Methods
-- (void)toggleOffCanvasView
+- (void)toggleOffCanvasViewWithDuration:(NSTimeInterval)duration animationCurve:(UIViewAnimationCurve)animationCurve
 {
-    if (_sideViewOpen) {
+    if (!_sideViewOpen) {
+        CGAffineTransform righttransform = CGAffineTransformMakeTranslation(_offCanvasWidth, 0);
         
-        if ([_offCanvasDelegate respondsToSelector:@selector(willSlideMenuOutOffCanvasNavigationController:)]) {
-            [_offCanvasDelegate willSlideMenuOutOffCanvasNavigationController:self];
+        if ([_offCanvasView superview] == nil) {
+            [self.view addSubview:_offCanvasView];
+            
+            if (_shouldFadeOut) {
+                [self setContra];
+            }
         }
         
-        [UIView animateWithDuration:0.25 animations:^{
+        if ([_offCanvasDelegate respondsToSelector:@selector(willSlideMenuInOffCanvasNavigationController:)]) {
+            [_offCanvasDelegate willSlideMenuInOffCanvasNavigationController:self];
+        }
+        
+        [UIView animateWithDuration:duration animations:^{
+            [UIView setAnimationCurve:animationCurve];
+            [_fadeoutView setBackgroundColor:_fadeoutColor];
+            for (UIView *view in self.view.subviews) {
+                if (![view isEqual:_fadeoutView]) {
+                    [view setTransform:righttransform];
+                }
+            }
+        }];
+        UIImage *icon = self.topViewController.navigationItem.leftBarButtonItem.image;
+        [self.topViewController.navigationItem.leftBarButtonItem setImage:[icon imageWithRenderingMode:UIImageRenderingModeAutomatic]];
+        [self viewControllers];
+        _sideViewOpen = YES;
+    } else {
+        [UIView animateWithDuration:duration animations:^{
+            [UIView setAnimationCurve:animationCurve];
             for (UIView *view in self.view.subviews) {
                 if (![view isEqual:_fadeoutView]) {
                     [view setTransform:CGAffineTransformIdentity];
@@ -198,32 +325,12 @@
         UIImage *icon = self.topViewController.navigationItem.leftBarButtonItem.image;
         [self.topViewController.navigationItem.leftBarButtonItem setImage:[icon imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         _sideViewOpen = NO;
-    } else {
-        CGAffineTransform righttransform = CGAffineTransformMakeTranslation(270, 0);
-        
-        [self.view addSubview:_offCanvasView];
-        
-        if (_shouldFadeOut) {
-            [self setContra];
-        }
-        
-        if ([_offCanvasDelegate respondsToSelector:@selector(willSlideMenuInOffCanvasNavigationController:)]) {
-            [_offCanvasDelegate willSlideMenuInOffCanvasNavigationController:self];
-        }
-        
-        [UIView animateWithDuration:0.25 animations:^{
-            [_fadeoutView setBackgroundColor:_fadeoutColor];
-            for (UIView *view in self.view.subviews) {
-                if (![view isEqual:_fadeoutView]) {
-                    [view setTransform:righttransform];
-                }
-            }
-        }];
-        UIImage *icon = self.topViewController.navigationItem.leftBarButtonItem.image;
-        [self.topViewController.navigationItem.leftBarButtonItem setImage:[icon imageWithRenderingMode:UIImageRenderingModeAutomatic]];
-        [self viewControllers];
-        _sideViewOpen = YES;
     }
+}
+- (void)toggleOffCanvasView
+{
+    
+    [self toggleOffCanvasViewWithDuration:0.25 animationCurve:UIViewAnimationCurveEaseInOut];
 }
 
 - (void)setContra
@@ -232,12 +339,11 @@
         _fadeoutView = [[UIView alloc] init];
         _fadeoutView.translatesAutoresizingMaskIntoConstraints = NO;
         _fadeoutView.userInteractionEnabled = YES;
+        _fadeoutView.backgroundColor = [UIColor clearColor];
     }
     if (_fadeoutColor == nil) {
         _fadeoutColor = [[UIColor blackColor] colorWithAlphaComponent:.33];
     }
-
-    _fadeoutView.backgroundColor = [UIColor clearColor];
     
     [self.view insertSubview:_fadeoutView atIndex:1];
     
@@ -273,12 +379,22 @@
 
 - (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:didLoadViewController:)]) {
-        [_offCanvasDelegate offCanvasNavigationController:self didLoadViewController:viewController];
+    if ([_offCanvasDelegate respondsToSelector:@selector(offCanvasNavigationController:didShowController:animated:)]) {
+        [_offCanvasDelegate offCanvasNavigationController:self didShowController:viewController animated:animated];
     }
 }
 
 #pragma mark - Delegate TableView
+- (void)tableView:(UITableView *)tableView didEndDisplayingCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    [self setViewControllers:@[[_offCanvasViewControllers objectAtIndex:indexPath.row]]];
+    [self setViewControllers:@[[_offCanvasViewControllers objectAtIndex:indexPath.row]] animated:NO];
+}
 
 #pragma mark - DataSource TableView
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView

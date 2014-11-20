@@ -28,13 +28,24 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.navigationItem setTitle:@"VC Three"];
-    [self setTitle:@"Three"];
+    self.view.backgroundColor = [UIColor yellowColor];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self performSelector:@selector(showAlert) withObject:nil afterDelay:10];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)showAlert
+{
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Disruption" message:@"Oh You shouldn't be disrupted, but i did." delegate:nil cancelButtonTitle:@"Ok :(" otherButtonTitles:nil];
+    [alert show];
 }
 
 /*

@@ -22,7 +22,10 @@
     UIStoryboard *story = [UIStoryboard storyboardWithName:@"Main_iPhone" bundle:nil];
     
     //[_window setRootViewController:[story instantiateViewControllerWithIdentifier:@"OCNC"]];
-    [(CROffCanvasNavigationController *)_window.rootViewController setOffCanvasDelegate:self];
+    CROffCanvasNavigationController *controller = (CROffCanvasNavigationController *)_window.rootViewController;
+    [controller setOffCanvasDelegate:self];
+    controller.shouldFadeOut = YES;
+    controller.fadeoutColor = [[UIColor redColor] colorWithAlphaComponent:0.5];
     
     return YES;
 }
