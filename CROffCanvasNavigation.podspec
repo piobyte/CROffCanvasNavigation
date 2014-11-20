@@ -9,7 +9,7 @@
 
 Pod::Spec.new do |s|
   s.name             = "CROffCanvasNavigation"
-  s.version          = "0.0.9"
+  s.version          = "0.0.10"
   s.summary          = "A NavigationController for Off-Canvas Navigation."
   # s.description      = <<-DESC
   #                     An optional longer description of CROffCanvasNavigation

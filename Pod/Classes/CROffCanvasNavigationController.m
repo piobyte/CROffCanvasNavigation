@@ -222,7 +222,13 @@
                 if (![view isEqual:_fadeoutView]) {
                     [view setTransform:CGAffineTransformIdentity];
                 }
+                if (_shouldFadeOut) {
+                    _fadeoutView.backgroundColor = [UIColor clearColor];
+                }
             }
+        } completion:^(BOOL finished) {
+            [_offCanvasView removeFromSuperview];
+            [_fadeoutView removeFromSuperview];
         }];
     } else {
         [UIView animateWithDuration:0.125 animations:^{
@@ -230,6 +236,9 @@
                 if (![view isEqual:_fadeoutView]) {
                     [view setTransform:CGAffineTransformMakeTranslation(_offCanvasWidth, 0)];
                 }
+            }
+            if (_shouldFadeOut) {
+                _fadeoutView.backgroundColor = _fadeoutColor;
             }
         }];
     }
