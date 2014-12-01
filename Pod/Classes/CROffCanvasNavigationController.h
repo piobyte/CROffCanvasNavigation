@@ -36,7 +36,7 @@
 
 @property (nonatomic, readonly) UIView *offCanvasView;
 @property (nonatomic, readonly) NSArray *offCanvasViewControllers;
-@property IBOutlet id <CROffCanvasNavigationDelegate> offCanvasDelegate;
+@property (nonatomic, weak) IBOutlet id <CROffCanvasNavigationDelegate> offCanvasDelegate;
 //@property BOOL highlightWithTintColor;
 @property BOOL shouldFadeOut;
 @property (nonatomic) UIColor *fadeoutColor;
